@@ -1,0 +1,11 @@
+services:
+  video-converter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - RUST_LOG=debug
+    volumes:
+      - .:/usr/src/app
