@@ -1,0 +1,15 @@
+[package]
+name = "video-converter"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+structopt = "0.3"
+ffmpeg-cli = "0.1"
+futures = "0.3"
+axum = { version = "0.7.7", features = ["multipart"] }
+tokio = { version = "1.0", features = ["full"] }
+tower-http = { version = "0.6.1", features = ["limit", "trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
