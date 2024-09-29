@@ -31,4 +31,4 @@ COPY --from=builder /usr/src/app/target/release/video-converter /usr/local/bin/v
 ENTRYPOINT ["video-converter"]
 
 # Exponha a porta que a aplicação irá usar
-EXPOSE 3000
+EXPOSE 8080
