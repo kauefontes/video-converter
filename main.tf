@@ -15,42 +15,9 @@ variable "region" {
   default     = "us-central1"
 }
 
-variable "github_repo_name" {
-  description = "Nome do repositório no GitHub"
-  type        = string
-  default     = "kauefontes/video-converter"
-}
-
 variable "github_oauth_token" {
-  description = "Token OAuth do GitHub"
+  description = "Token de acesso do GitHub"
   type        = string
-  sensitive   = true
-}
-
-resource "google_cloudbuild_trigger" "docker_image_build" {
-  name = "docker-image-build"
-
-  github {
-    owner = split("/", var.github_repo_name)[0]
-    name  = split("/", var.github_repo_name)[1]
-    push {
-      branch = "main"
-    }
-  }
-
-  build {
-    step {
-      name = "gcr.io/cloud-builders/docker"
-      args = ["build", "-t", "gcr.io/${var.project_id}/video-converter:latest", "."]
-    }
-
-    step {
-      name = "gcr.io/cloud-builders/docker"
-      args = ["push", "gcr.io/${var.project_id}/video-converter:latest"]
-    }
-
-    images = ["gcr.io/${var.project_id}/video-converter:latest"]
-  }
 }
 
 resource "google_cloud_run_service" "video_converter" {
