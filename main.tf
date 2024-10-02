@@ -21,6 +21,10 @@ data "google_secret_manager_secret_version" "github_oauth_token" {
   version = "latest"
 }
 
+resource "random_id" "deployment" {
+  byte_length = 8
+}
+
 resource "google_cloud_run_service" "video_converter" {
   name     = "video-converter"
   location = var.region
@@ -41,6 +45,10 @@ resource "google_cloud_run_service" "video_converter" {
         env {
           name  = "GITHUB_OAUTH_TOKEN"
           value = data.google_secret_manager_secret_version.github_oauth_token.secret_data
+        }
+        env {
+          name  = "DEPLOYMENT_ID"
+          value = random_id.deployment.hex
         }
       }
     }
