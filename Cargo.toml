@@ -12,6 +12,9 @@ tokio = { version = "1.0", features = ["full"] }
 tower-http = { version = "0.6.1", features = ["limit", "trace"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+reqwest = "0.12.8"
+anyhow = "1.0.44"
+oxipng = "9.1.2"
 
 [[bin]]
 name = "video-converter"
