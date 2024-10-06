@@ -1,4 +1,4 @@
-use oxipng::{optimize, InFile, OutFile, Options};
+use oxipng::{optimize, InFile, Options, OutFile};
 use std::path::Path;
 
 pub async fn optimize_image(input_path: &str, output_path: &str) -> Result<(), String> {
@@ -9,6 +9,6 @@ pub async fn optimize_image(input_path: &str, output_path: &str) -> Result<(), S
         preserve_attrs: false,
     };
 
-    optimize(&input, &output, &options)
-        .map_err(|e| e.to_string())
+    optimize(&input, &output, &options).map_err(|e| e.to_string())
 }
+

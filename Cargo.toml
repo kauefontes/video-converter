@@ -19,3 +19,4 @@ oxipng = "9.1.2"
 [[bin]]
 name = "video-converter"
 path = "src/main.rs"
+

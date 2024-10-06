@@ -1,10 +1,10 @@
-mod video_converter;
-mod routes;
 mod app;
 mod image_optimizer;
+mod routes;
+mod video_converter;
 
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use app::create_app;
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
 async fn main() {
@@ -19,9 +19,8 @@ async fn main() {
 
     let app = create_app();
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
-        .await
-        .unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
     tracing::debug!("listening on {}", listener.local_addr().unwrap());
     axum::serve(listener, app).await.unwrap();
 }
+
