@@ -30,6 +30,11 @@ resource "google_cloud_run_service" "video_converter" {
   location = var.region
 
   template {
+    metadata {
+      annotations = {
+        "timestamp" = "${timestamp()}"
+      }
+    }
     spec {
       containers {
         image = "gcr.io/${var.project_id}/video-converter:latest"

@@ -9,3 +9,4 @@ services:
       - RUST_LOG=debug
     volumes:
       - .:/usr/src/app
+
