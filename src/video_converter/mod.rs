@@ -15,7 +15,7 @@ pub async fn convert_to_apple_compatible(
             File::new(output)
                 .option(Parameter::KeyValue("vcodec", "libx264"))
                 .option(Parameter::KeyValue("preset", "ultrafast"))
-                .option(Parameter::KeyValue("crf", "23"))
+                .option(Parameter::KeyValue("crf", "24"))
                 .option(Parameter::KeyValue("acodec", "aac"))
                 .option(Parameter::KeyValue("b:a", "128k"))
                 .option(Parameter::KeyValue("movflags", "+faststart")),
