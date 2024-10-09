@@ -13,6 +13,9 @@ pub async fn upload_to_s3(
     let mut buffer = Vec::new();
     file.read_to_end(&mut buffer)
         .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    tracing::info!("Uploading file to S3: {}", presigned_url);
+    tracing::info!("File size: {}", buffer.len());
+    tracing::info!("File path: {}", output_path);
 
     let client = Client::new();
     let response = client
@@ -31,4 +34,3 @@ pub async fn upload_to_s3(
         ))
     }
 }
-
