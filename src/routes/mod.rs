@@ -1,7 +1,7 @@
 mod uploader;
 
 use crate::image_optimizer::optimize_image;
-use crate::video_converter::convert_to_apple_compatible;
+use crate::video_converter::{has_aac_codec, process_video};
 use anyhow::Result;
 use axum::{extract::Multipart, http::StatusCode, response::IntoResponse};
 use std::fs::File;
@@ -33,7 +33,7 @@ pub async fn upload_video(
             let path = Path::new(&input_path);
             let stem = path.file_stem().unwrap().to_str().unwrap();
             let extension = path.extension().unwrap().to_str().unwrap();
-            output_path = format!("/tmp/{}_aac.{}", stem, extension);
+            output_path = format!("/tmp/{}.{}", stem, extension);
 
             let mut file = File::create(&input_path)
                 .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
@@ -51,10 +51,14 @@ pub async fn upload_video(
         }
     }
 
-    convert_to_apple_compatible(&input_path, &output_path)
-        .await
-        .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
-    upload_to_s3(&output_path, &presigned_url).await?;
+    if has_aac_codec(&input_path).await.map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))? {
+        upload_to_s3(&input_path, &presigned_url).await?;
+    } else {
+        process_video(&input_path, &output_path)
+            .await
+            .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+        upload_to_s3(&output_path, &presigned_url).await?;
+    }
 
     Ok((StatusCode::OK, "Arquivo enviado com sucesso".to_string()).into_response())
 }
@@ -106,4 +110,3 @@ pub async fn upload_image(
 
     Ok((StatusCode::OK, "Arquivo enviado com sucesso".to_string()).into_response())
 }
-
