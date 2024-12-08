@@ -28,6 +28,7 @@ pub async fn upload_to_s3(
     if response.status().is_success() {
         Ok(())
     } else {
+        tracing::info!("Error uploading file to S3: {:?}", response);
         Err((
             StatusCode::INTERNAL_SERVER_ERROR,
             "Erro ao enviar arquivo para o S3".to_string(),
